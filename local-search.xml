@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>前端启示录</title>
+    <link href="undefined2019/09/28/%E5%89%8D%E7%AB%AF%E5%90%AF%E7%A4%BA%E5%BD%95/"/>
+    <url>2019/09/28/%E5%89%8D%E7%AB%AF%E5%90%AF%E7%A4%BA%E5%BD%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="暑假的锻炼"><a href="#暑假的锻炼" class="headerlink" title="暑假的锻炼"></a>暑假的锻炼</h1><p>上学期学期末，有个老师的团队前端缺人，正在招新，那时候刚学习完html+css+js，算是入门吧，发现自己对前端方向还是挺有兴趣了，后来就去应聘了，后来也顺利进入了团队。</p><p>刚进入那会，以为前端不就写写html+css嘛，没多难，后来看了一下师兄写的工程源码，一脸懵逼，原来html标签还能在js里这么用，后来知道了师兄用得技术栈是react，这是一种jsx语法。</p><p>师兄给我们列了一张暑假学习清单。如下图。</p><p><img src="/Users/mac/myblog/public/img/target1.png" srcset="/img/loading.gif" alt="学习任务"></p><p><img src="/Users/mac/myblog/public/img/target2.png" srcset="/img/loading.gif" alt="学习任务"></p><p>师兄还创建了一个coding仓库，在上面发布任务，让我们完成。前面的任务还好，不过这种理论的东西对于我来说真的是很难记全，都是看着会，用时废，也就草草百度搜索复制粘贴答案应付任务，总感觉这东西我已经掌握了，但是就是不知道该运用在哪里，然后过几天学其他东西就又把新东西给忘了，效率着实低下。我还是比较喜欢偏实战一点，所以我经常观看up主用html+css做出来的炫酷效果，然后按着他的思路再自己敲一遍，这样就对一些css样式有了更深的理解。学习完第一周后收获还是蛮大的，加深了以前对html+css+js的理解</p><p>第二周的东西就会比较难一点，全是高级js的内容，理解起来确实有点困难，在B站看了尚硅谷的js进阶课程，感觉不错，我记得那时候死磕原型链，睡前都在想万物皆对象，有了下面这张图就就很好理解了。</p><p><img src="/Users/mac/myblog/public/img/yuanxinglian.png" srcset="/img/loading.gif" alt="原型链"></p><p>对于闭包，其实他的概念并不复杂，函数内部中的函数访问父函数中声明的变量，不过到现在我都不知道该如何合理的运用，或许是我还没掌握吧23333</p><pre><code class="js">function init() {    var name = &quot;Mozilla&quot;; // name 是一个被 init 创建的局部变量    function displayName() { // displayName() 是内部函数,一个闭包        alert(name); // 使用了父函数中声明的变量    }    displayName();</code></pre><p>还学习了伟大的<strong>ajax</strong>和<strong>json</strong>，解开了动态网站神秘面纱，以前写得都是静态页面，不过学习了伟大的ajax后，对前后端有了一个更深层次的认识。还有jQuery，做特效也太强了，插件库用起来太爽了。不过师兄跟我说现在jQuery快要淘汰了，了解基本的就可以，不用学太深，我一脸懵逼。。。。</p><p>第三周，跟着B站千峰前端的nodejs课程，入门了让前端革命的nodejs，真没想到，js也能用来写服务端👍。nodejs牛逼！！！</p><p>学习了sass，预编译器确实比原生的方便太多了，嵌套写法让看起来结构更加清晰等等。还有es6，ts，不过都是入门而已，时间紧迫。</p><p>第四周，React，前端三大框架之一，记得最痛苦的就是刚开始学react安装配置的各种插件，webpack，babel等，配置这东西太难了，跟着视频做，配完隔天就忘记，着实难受。后来才知道了create-react-app这个脚手架，真的是福音，开源牛逼。记得学习了差不多两个多星期了react，跟着视频老师做了一个react全家桶+antd小项目，有点成就感，后来自己也添加了许多功能上去，一步一步的完善。</p><p>五周的学习终于熬过了，9106的学习时间，不过确实学习到了许多了东西，这些技术都是现在的热门技术，这半个暑假算是过得充实。我以为学完就可以跟着师兄一起做项目了，问了师兄接下来有什么安排，他叫我们先继续学。问他学什么，他也说巩固一下前面的知识吧，很敷衍。顿时很迷茫，索性就回宿舍学习了，后来又学习react-native，这个技术安装遇到的问题可太多，而且是网上很难找到那种，也是以一个小项目结束了，算是入门了吧。这是项目都这我们github仓库，有兴趣了可以去看看喔。</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>通过这篇文章，我把暑假所学习到的东西给大概回忆了一下，算是对暑假的一个总结，同时也是对知识点的回顾。</p><blockquote><p>勿喷文采排版，正学习中…..</p></blockquote>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>总结</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>使用hexo搭建个人博客</title>
     <link href="undefined2019/09/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/"/>
     <url>2019/09/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0/</url>
@@ -14,7 +33,7 @@
     
     <tags>
       
-      <tag>javascript</tag>
+      <tag>hexo</tag>
       
     </tags>
     
