@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="description" content="郭泽鸿的个人博客">
+  <meta name="author" content="zehongguo">
+  <meta name="keywords" content>
+  <title>GraphQL+nodejs+mongodb的使用 ~ wassupbro</title>
+  <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/lib/mdbootstrap/css/mdb.min.css">
+  <link rel="stylesheet" href="/lib/github-markdown/github-markdown.min.css">
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_1067060_qzomjdt8bmp.css">
+  
+    <link rel="stylesheet" href="/lib/prettify/tomorrow-night-eighties.min.css">
+  
+  <link rel="stylesheet" href="/css/main.css">
+
+  
+</head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>wassupcoder</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives/">Archives</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/">Categories</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/">Tags</a>
+          </li>
+        
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about/">About</a>
+          </li>
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+</nav>
+
+    <div class="view intro-2"
+         style="background: url('/img/default.png')no-repeat center center;
+           background-size: cover;
+           background-attachment: fixed;">
+      <div class="full-bg-img">
+        <div class="mask rgba-black-light flex-center">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <br>
+              <p>星期日, 九月 29日 2019, 10:09 晚上</p>
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="py-5 z-depth-3" id="board">
+        <div class="post-content mx-auto">
+          <div class="markdown-body">
+            <blockquote>
+<p>今天闲着没事就看了一下GraphQL，其实刚开始我也不知道是干嘛用的</p>
+</blockquote>
+<h1 id="GraphQL-一种用于-API-的查询语言"><a href="#GraphQL-一种用于-API-的查询语言" class="headerlink" title="GraphQL,一种用于 API 的查询语言"></a><a href="https://graphql.cn/" target="_blank" rel="noopener">GraphQL</a>,一种用于 API 的查询语言</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>GraphQL 既是一种用于 API 的查询语言也是一个满足你数据查询的运行时。 GraphQL 对你的 API 中的数据提供了一套易于理解的完整描述，使得客户端能够准确地获得它需要的数据，而且没有任何冗余，也让 API 更容易地随着时间推移而演进，还能用于构建强大的开发者工具。也是就后端返回的数据可能有些你用不到(数据冗余)，你可以按需取得你想要的数据。没错，就是这么强大。</p>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><blockquote>
+<p>GraphQL可以用于许多后端语言，我用得的是nodejs+express框架+mongoDB。</p>
+</blockquote>
+<ol>
+<li><p>首先需要<code>npm install --save -D express express-graphql graphql</code> ，如果已经添加了express环境，则可以把express去掉。</p>
+</li>
+<li><p>在你对应的路由下，引入<code>const graphqlHTTP = require(&#39;express-graphql&#39;)</code> ，我的是在分发的graphql路由下。基本代码如下。</p>
+<pre><code class="js">//graphql.js
+//已下是固定模式
+const express = require(&quot;express&quot;);
+const router = express.Router();
+const graphqlHTTP = require(&#39;express-graphql&#39;);
+const defalutschema = require(&#39;../schema/defualtschema&#39;);//schema
+router.use(&#39;/&#39;, graphqlHTTP({
+  schema: defalutschema,//
+  graphiql: true,
+}));
+module.exports = router;</code></pre>
+</li>
+<li><p>在根目录下新建一个schema目录，在这个目录新建defualtschema.js文件，也就是graphql.js的<code>const defalutschema = require(&#39;../schema/defualtschema&#39;);</code>添加以下的代码;</p>
+<pre><code class="js">//defualtschema.js
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLList,
+  GraphQLSchema,
+  GraphQLScalarType
+} = require(&#39;graphql&#39;);
+//引入mongoose的模型，
+const Food = require(&#39;../db/model/foodModel&#39;);
+const User = require(&#39;../db/model/userModel&#39;);
+const mongoose = require(&#39;mongoose&#39;);
+
+//创建schema一般分3步
+
+// 1.定义需要查询的Schema类型，类型需要在graphql模块取出。请看👆
+let foodSchema = new GraphQLObjectType({
+  //名字
+  name: &#39;food&#39;,
+  //字段，类型需要跟数据库表一致，我的数据库表具体内容在下面贴出。
+  fields: {
+    _id: {
+      type: GraphQLString
+    },
+    foodName: {
+      type: GraphQLString
+    },
+    foodPrice: {
+      type: GraphQLString
+    },
+    foodDec: {
+      type: GraphQLString
+    },
+    foodType: {
+      type: GraphQLString
+    },
+    foodTypeID: {
+      type: GraphQLInt
+    },
+  }
+});
+
+// 2.定义一个根，根里面定义调用foodSchema类型的方法
+
+let rootSchema = new GraphQLObjectType({
+  name: &#39;root&#39;,
+  fields: {
+    //这里的字段相当于一个方法,这里是获取foodList(食物的全部数据)
+    foodList: {
+      type: GraphQLList(foodSchema),//是一个数组，需要用GraphQLList包裹
+      async resolve(parent, args) {
+        let foodList = await Food.find();//mongoose封装的方法，用于查找数据库数据
+        return foodList;//将查询到的数据返回
+      }
+    },
+  }
+});
+
+//3.导出，默认格式
+module.exports = new GraphQLSchema({
+  query: rootSchema
+});
+</code></pre>
+</li>
+</ol>
+<ol start="4">
+<li><p>打开浏览器，输入url，就会看到，以下界面，在左边输入<code>{}</code>，里面写得就是<code>rootSchema</code>中定义的字段<code>fields</code>，这里输入foodList，然后选择<strong>左上角的播放按钮</strong></p>
+<p><img src="/Users/mac/myblog/public/img/GraphQL/GraphQL1.png" srcset="/img/loading.gif" alt="图1"></p>
+<p>就会得到以下内容，右边就是返回的数据。你可以在左边选择你需要的字段比如</p>
+<pre><code class="js">{
+    foodList{
+        foodName
+        foodPrice
+        FoodDec
+    }
+}
+//在右边就可得到你想要数据,是不是很神奇！！！</code></pre>
+<p><img src="/Users/mac/myblog/public/img/GraphQL/GraphQL2.png" srcset="/img/loading.gif" alt="图2"></p>
+</li>
+</ol>
+<ol start="5">
+<li><p>传入参数(这里用ID)来获取食物的信息，修改<code>rootSchema</code>中代码</p>
+<pre><code class="js">let rootSchema = new GraphQLObjectType({
+  name: &#39;root&#39;,
+  fields: {
+    //这里的字段相当于一个方法,这里是获取foodList(食物的全部数据)
+    foodList: ...,
+
+    //按id查询食物信息
+    getFoodById: {
+      type: foodSchema,
+        //参数：这里传入ID
+      args: {
+        ID: {
+          type: GraphQLString
+        }
+      },
+      async resolve(parent, args) {
+        let id = mongoose.Types.ObjectId(args.ID);
+        let foodInfo = await Food.find({
+          _id: id
+        })
+        return foodInfo[0];//这里需要注意，因为返回的是一个数组，但是这里需要对象。
+      }
+    },
+  }
+});
+
+</code></pre>
+</li>
+</ol>
+<pre><code>
+   回到浏览器，在`getFoodById(...)`方法中传入参数ID:&quot;…..&quot;,这里参数名字要和服务端的参数一致。
+
+   ![图三](/Users/mac/myblog/public/img/GraphQL/graphQL3.png)
+
+
+
+   这就是GraphQL的基本用法。
+
+
+
+## 总结
+
+GraphQL入门还算是比较简单的，不过要深入还有许多内容可以学，还没有学习前端如何调用接口，明天继续学，继续加油。
+</code></pre>
+            <hr>
+          </div>
+          <br>
+          <div>
+            
+            <p>
+              <i class="iconfont icon-tag"></i>
+              
+                <a class="hover-with-bg" href="/tags/GraphQL">GraphQL</a>
+              
+            </p>
+            
+              <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://zh.wikipedia.org/wiki/Wikipedia:CC_BY-SA_3.0%E5%8D%8F%E8%AE%AE%E6%96%87%E6%9C%AC" rel="nofollow noopener">CC BY-SA 3.0协议</a> 。转载请注明出处！</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-none d-lg-block col-lg-2 toc-container">
+      
+  <div id="toc">
+    <p class="h4"><i class="far fa-list-alt"></i>&nbsp;目录</p>
+    <div id="tocbot"></div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- custom -->
+
+
+<!-- Comments -->
+<div class="col-lg-7 mx-auto nopadding-md">
+  <div class="container comments mx-auto" id="comments">
+    
+  </div>
+</div>
+
+    
+  </main>
+
+  
+    <a class="z-depth-1" id="scroll-top-button" href="#" role="button">
+      <i class="fa fa-chevron-up scroll-top-arrow" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><b>Hexo</b></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"> <b>Fluid</b></a>
+    <br>
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="/lib/jquery/jquery.min.js" ></script>
+<script src="/lib/popper/popper.min.js" ></script>
+<script src="/lib/bootstrap/js/bootstrap.min.js" ></script>
+<script src="/lib/mdbootstrap/js/mdb.min.js" ></script>
+<script src="/js/main.js" ></script>
+
+  <script src="/js/lazyload.js" ></script>
+
+
+  
+    <script src="/lib/tocbot/tocbot.min.js" ></script>
+  
+  <script src="/js/post.js" ></script>
+
+
+  <script src="/lib/prettify/prettify.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      $('pre').addClass('prettyprint linenums');
+      prettyPrint();
+    })
+  </script>
+
+
+  <script src="/lib/typed/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "GraphQL+nodejs+mongodb的使用&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+  <script src="/lib/anchor/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "false",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      getSearchFile(path);
+      this.onclick = null
+    }
+  </script>
+
+
+</body>
+</html>
