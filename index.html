@@ -128,6 +128,47 @@
     
     
     <div class="col-12 col-md-8 m-auto">
+      <a href="/2019/10/11/js高级复习/">
+        <p class="h4 index-header">js高级复习</p>
+        
+        
+          
+        
+        <div class="index-excerpt" >
+          <div class="index-text mb-1">Javascript高级复习1. new创建对象的本质    function Person(name,age){
+      this.name = name;
+      this.age = age;
+      this.sayHi = function(){
+        return &quot;Hello,I&#39;m&quot; + this.name;
+      }
+    }
+    let John = new Person(name,age);
+    /**
+     * new的过程经过了这几步
+     * 1. let obj = {};新建一个对象，开辟空间
+     * 2. obj.__proto__ = Person.prototype;将对象的__proto__指向构造函数的prototype
+     * 3. Person.call(obj); 执行构造函数中的代码，注意。此时的this为obj
+     * 4. 最后返回obj
+     * 
+    */
+2. 几种常见的对象创建方式1. 字面量创建方式    let perso</div>
+        </div>
+      </a>
+
+      <div>
+        
+          <i class="iconfont icon-riqi2"></i>&nbsp;2019-10-11&nbsp;&nbsp;
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4 mx-auto">
+    
+    
+    <div class="col-12 col-md-8 m-auto">
       <a href="/2019/09/29/GraphQL-nodejs-mongodb的使用/">
         <p class="h4 index-header">GraphQL+nodejs+mongodb的使用</p>
         
